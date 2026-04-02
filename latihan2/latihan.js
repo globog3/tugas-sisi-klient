@@ -7,14 +7,19 @@ const mahasiswa = {
   status: true,
   matkul: [{ matkulid: "MK001", tugas: 85, UTS: 88, UAS: 90 }],
 };
+console.log(mahasiswa);
+[{ nim: "22001", nama: "Budi Santoso", umur: 21, status: true }];
 
 const mahasiswaList = [
   { nim: "22001", nama: "Budi Santoso", status: true },
   { nim: "22002", nama: "Siti Aminah", status: false },
 ];
 
-console.log(mahasiswa);
-[{ nim: "22001", nama: "Budi Santoso", umur: 21, status: true }];
+console.log(mahasiswalist);
+[
+  { nim: "22001", nama: "Budi Santoso", status: true },
+  { nim: "22002", nama: "Siti Aminah", status: false },
+];
 
 const list_mahasiswa = [
   {
