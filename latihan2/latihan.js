@@ -1,3 +1,5 @@
+const list_nim = ["22001", "22002", "22003"];
+
 const mahasiswa = {
   nim: "22001",
   nama: "Budi Santoso",
@@ -54,3 +56,9 @@ const { nama, umur, status } = mahasiswa1;
 console.log("nama: " + nama + ", umur: " + umur); // 'nama= budi santoso
 
 console.log(`nama: ${nama}, umur: ${umur}`);
+
+const listmahasiswa = [
+  { nim: "123", nama: "json", umur: 18, status: true },
+  { nim: "44221", nama: "yanti", umur: 20, status: false },
+  { nim: "1231", nama: "pantasts", umur: 24, status: true },
+];
