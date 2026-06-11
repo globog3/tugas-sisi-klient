@@ -1,14 +1,54 @@
 {
-  "users": [],
-  "mahasiswa": [
+  "users": [
     {
-      "nim": "123",
-      "nama": "adi",
-      "status": true,
-      "id": "wKrS6jeQA2U"
+      "id": "1",
+      "name": "Admin",
+      "email": "admin@mail.com",
+      "role": "admin",
+      "permissions": [
+        "read",
+        "write",
+        "delete"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "User",
+      "email": "user@mail.com",
+      "role": "user",
+      "permissions": [
+        "read"
+      ]
     }
   ],
-  "dosen": [],
-  "matakuliah": [],
+  "mahasiswa": [
+    {
+      "id": "1",
+      "nim": "A11.2023.0001",
+      "nama": "Budi",
+      "jurusan": "Informatika",
+      "status": true
+    },
+    {
+      "id": "2",
+      "nim": "123",
+      "nama": "Adi",
+      "jurusan": "Informatika",
+      "status": true
+    },
+    {
+      "id": "3",
+      "nim": "124",
+      "nama": "Andi",
+      "jurusan": "Sistem Informasi",
+      "status": true
+    },
+    {
+      "nim": "122",
+      "nama": "bagas",
+      "status": true,
+      "id": "eGLEH7rSYtE"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

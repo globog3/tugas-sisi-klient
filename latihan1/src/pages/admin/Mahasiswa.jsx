@@ -63,18 +63,11 @@ export default function Mahasiswa() {
   };
 
   const updateMahasiswa = async (data) => {
-    try {
-      const item = mahasiswa.find((m) => m.nim === selectedMahasiswa.nim);
+    const item = mahasiswa.find((m) => m.id === selectedMahasiswa.id);
 
-      if (!item) return;
+    await api.put(`/mahasiswa/${item.id}`, data);
 
-      await api.put(`/mahasiswa/${item.id}`, data);
-
-      fetchMahasiswa();
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    fetchMahasiswa(); // refresh data
   };
 
   const deleteMahasiswa = async (nim) => {

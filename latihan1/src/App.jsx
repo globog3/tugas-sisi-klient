@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Login from "./pages/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import Mahasiswa from "./pages/admin/Mahasiswa";
@@ -8,20 +9,22 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import DosenPage from "./pages/Dosen/DosenPage";
 import MataKuliahPage from "./pages/MataKuliah/MataKuliahPage";
 import RegisterPage from "./pages/Register/RegisterPage";
+import UserPage from "./pages/UserPage";
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* LOGIN */}
+        {/* PUBLIC ROUTES */}
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/dosen" element={<DosenPage />} />
-
         <Route path="/matakuliah" element={<MataKuliahPage />} />
 
-        <Route path="/register" element={<RegisterPage />} />
+        {/* TEST USER PAGE */}
+        <Route path="/users" element={<UserPage />} />
 
-        {/* ADMIN */}
+        {/* ADMIN ROUTES */}
         <Route
           path="/admin"
           element={
@@ -38,3 +41,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+export default App;
