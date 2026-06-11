@@ -1,184 +1,74 @@
-import { useState, useEffect } from "react";
-import MahasiswaModal from "./MahasiswaModal";
+import { useState } from "react";
 import MahasiswaTable from "./MahasiswaTable";
-import { confirmAlert } from "../../helpers/swal";
+import MahasiswaModal from "./MahasiswaModal";
+
+import {
+  useMahasiswa,
+  useCreateMahasiswa,
+  useUpdateMahasiswa,
+  useDeleteMahasiswa,
+} from "../../utils/hooks/useMahasiswa";
+
 import { showSuccess, showError } from "../../helpers/toast";
-import api from "../../services/api";
 
 export default function Mahasiswa() {
-  const [mahasiswa, setMahasiswa] = useState([]);
-  const [selectedMahasiswa, setSelectedMahasiswa] = useState(null);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const { data: mahasiswa = [] } = useMahasiswa();
 
-  // =========================
-  // LOAD DATA
-  // =========================
+  const create = useCreateMahasiswa();
+  const update = useUpdateMahasiswa();
+  const remove = useDeleteMahasiswa();
 
-  useEffect(() => {
-    fetchMahasiswa();
-  }, []);
-
-  const fetchMahasiswa = async () => {
-    try {
-      const res = await api.get("/mahasiswa");
-
-      console.log("Response API:", res.data);
-
-      const data = Array.isArray(res.data)
-        ? res.data
-        : Array.isArray(res.data.data)
-          ? res.data.data
-          : [];
-
-      setMahasiswa(data);
-    } catch (error) {
-      console.error(error);
-      setMahasiswa([]);
-      showError("Gagal mengambil data mahasiswa!");
-    }
-  };
-
-  // =========================
-  // CRUD FUNCTION
-  // =========================
-
-  const storeMahasiswa = async (data) => {
-    try {
-      console.log("Data dikirim:", data);
-
-      const response = await api.post("/mahasiswa", data);
-
-      console.log("Response:", response.data);
-
-      await fetchMahasiswa();
-    } catch (error) {
-      console.error("Store Error:", error);
-
-      if (error.response) {
-        console.log(error.response.data);
-      }
-
-      throw error;
-    }
-  };
-
-  const updateMahasiswa = async (data) => {
-    const item = mahasiswa.find((m) => m.id === selectedMahasiswa.id);
-
-    await api.put(`/mahasiswa/${item.id}`, data);
-
-    fetchMahasiswa(); // refresh data
-  };
-
-  const deleteMahasiswa = async (nim) => {
-    try {
-      const item = mahasiswa.find((m) => m.nim === nim);
-
-      if (!item) return;
-
-      await api.delete(`/mahasiswa/${item.id}`);
-
-      fetchMahasiswa();
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-
-  // =========================
-  // MODAL CONTROL
-  // =========================
-
-  const openAddModal = () => {
-    setSelectedMahasiswa(null);
-    setModalOpen(true);
-  };
-
-  const openEditModal = (data) => {
-    setSelectedMahasiswa(data);
-    setModalOpen(true);
-  };
-
-  // =========================
-  // SUBMIT
-  // =========================
+  const [selected, setSelected] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = async (data) => {
-    if (selectedMahasiswa) {
-      const confirm = await confirmAlert(
-        "Update Data?",
-        "Yakin ingin mengubah data?",
-      );
-
-      if (!confirm) return;
-
-      try {
-        await updateMahasiswa(data);
-
-        showSuccess("Data berhasil diupdate!");
-
-        setModalOpen(false);
-      } catch {
-        showError("Gagal update data!");
+    try {
+      if (selected) {
+        await update.mutateAsync({
+          id: selected.id,
+          data,
+        });
+        showSuccess("Berhasil update");
+      } else {
+        await create.mutateAsync(data);
+        showSuccess("Berhasil tambah");
       }
-    } else {
-      try {
-        await storeMahasiswa(data);
 
-        showSuccess("Data berhasil ditambahkan!");
-
-        setModalOpen(false);
-      } catch {
-        showError("Gagal menambahkan data!");
-      }
+      setOpen(false);
+    } catch {
+      showError("Gagal proses data");
     }
   };
 
-  const handleDelete = async (nim) => {
-    const confirm = await confirmAlert(
-      "Hapus Data?",
-      "Data tidak bisa dikembalikan!",
-    );
-
-    if (!confirm) return;
-
+  const handleDelete = async (id) => {
     try {
-      await deleteMahasiswa(nim);
-
-      showSuccess("Data berhasil dihapus!");
+      await remove.mutateAsync(id);
+      showSuccess("Berhasil hapus");
     } catch {
-      showError("Gagal menghapus data!");
+      showError("Gagal hapus");
     }
   };
 
   return (
     <div>
-      <div className="flex justify-between mb-4">
-        <h1 className="text-xl font-bold">Daftar Mahasiswa</h1>
+      <button onClick={() => setOpen(true)}>+ Tambah</button>
 
-        <button
-          onClick={openAddModal}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Tambah Mahasiswa
-        </button>
-      </div>
-
-      {/* TABLE */}
       <MahasiswaTable
         mahasiswa={mahasiswa}
-        openEditModal={openEditModal}
+        onEdit={(data) => {
+          setSelected(data);
+          setOpen(true);
+        }}
         onDelete={handleDelete}
       />
 
-      {/* MODAL */}
-      <MahasiswaModal
-        isModalOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        onSubmit={handleSubmit}
-        selectedMahasiswa={selectedMahasiswa}
-        mahasiswa={mahasiswa}
-      />
+      {open && (
+        <MahasiswaModal
+          onClose={() => setOpen(false)}
+          onSubmit={handleSubmit}
+          selected={selected}
+        />
+      )}
     </div>
   );
 }

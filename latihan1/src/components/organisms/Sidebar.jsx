@@ -31,8 +31,11 @@ export default function Sidebar() {
           Mata Kuliah
         </Link>
 
-        <Link to="/admin/register" className={menuClass("/admin/register")}>
+        <Link to="/register" className={menuClass("/register")}>
           Registrasi User
+        </Link>
+        <Link to="/admin/users" className="block px-6 py-3 hover:bg-blue-700">
+          Users (RBAC)
         </Link>
       </nav>
     </div>

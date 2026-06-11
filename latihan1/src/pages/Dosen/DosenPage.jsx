@@ -1,46 +1,38 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
+import { useState } from "react";
+import { useDosen } from "../../utils/hooks/useDosen";
 
-function DosenPage() {
-  const [dosen, setDosen] = useState([]);
+export default function DosenPage() {
+  const { data: dosen = [], isLoading, isError } = useDosen();
 
-  const getData = async () => {
-    const res = await api.get("/dosen");
-    setDosen(res.data);
-  };
+  const [selected, setSelected] = useState(null);
 
-  const hapusData = async (id) => {
-    await api.delete(`/dosen/${id}`);
-    getData();
-  };
+  if (isLoading) {
+    return <p>Loading data dosen...</p>;
+  }
 
-  useEffect(() => {
-    getData();
-  }, []);
+  if (isError) {
+    return <p>Gagal mengambil data dosen</p>;
+  }
 
   return (
     <div>
-      <h1>Data Dosen</h1>
+      <h1 className="text-xl font-bold mb-4">Data Dosen</h1>
 
-      <table>
+      <table className="w-full border">
         <thead>
-          <tr>
-            <th>Nama</th>
-            <th>NIDN</th>
-            <th>Aksi</th>
+          <tr className="bg-gray-200">
+            <th className="border p-2">ID</th>
+            <th className="border p-2">Nama</th>
+            <th className="border p-2">Mata Kuliah</th>
           </tr>
         </thead>
 
         <tbody>
           {dosen.map((item) => (
             <tr key={item.id}>
-              <td>{item.nama}</td>
-              <td>{item.nidn}</td>
-              <td>
-                <button>Edit</button>
-
-                <button onClick={() => hapusData(item.id)}>Hapus</button>
-              </td>
+              <td className="border p-2">{item.id}</td>
+              <td className="border p-2">{item.nama}</td>
+              <td className="border p-2">{item.matakuliah}</td>
             </tr>
           ))}
         </tbody>
@@ -48,5 +40,3 @@ function DosenPage() {
     </div>
   );
 }
-
-export default DosenPage;

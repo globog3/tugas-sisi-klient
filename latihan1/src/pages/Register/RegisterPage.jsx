@@ -2,7 +2,7 @@ import { useState } from "react";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
-function RegisterPage() {
+export default function RegisterPage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -13,39 +13,60 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await api.post("/users", form);
+    try {
+      await api.post("/users", {
+        ...form,
+        role: "user",
+      });
 
-    alert("Registrasi Berhasil");
+      alert("Registrasi Berhasil");
 
-    navigate("/login");
+      // 🔥 FIX: login kamu ada di "/"
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      alert("Registrasi gagal");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Username"
-        onChange={(e) =>
-          setForm({
-            ...form,
-            username: e.target.value,
-          })
-        }
-      />
+    <div style={{ padding: 20 }}>
+      <h2>Register</h2>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setForm({
-            ...form,
-            password: e.target.value,
-          })
-        }
-      />
+      <form onSubmit={handleSubmit}>
+        {/* USERNAME */}
+        <input
+          placeholder="Username"
+          value={form.username}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              username: e.target.value,
+            })
+          }
+        />
 
-      <button type="submit">Register</button>
-    </form>
+        <br />
+        <br />
+
+        {/* PASSWORD */}
+        <input
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              password: e.target.value,
+            })
+          }
+        />
+
+        <br />
+        <br />
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
 }
-
-export default RegisterPage;
