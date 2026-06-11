@@ -1,37 +1,16 @@
 import Header from "../components/organisms/Header";
 import Sidebar from "../components/organisms/Sidebar";
 import Footer from "../components/organisms/Footer";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export default function AdminLayout({ title = "" }) {
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* SIDEBAR */}
-      <div className="w-64 bg-blue-900 text-white p-4">
-        <h2 className="text-xl font-bold mb-6">Admin</h2>
+      {/* Sidebar Component */}
+      <Sidebar />
 
-        <NavLink
-          to="/admin"
-          end
-          className={({ isActive }) =>
-            `block p-2 mb-2 rounded ${isActive ? "bg-blue-700" : ""}`
-          }
-        >
-          Dashboard
-        </NavLink>
-
-        <NavLink
-          to="/admin/mahasiswa"
-          className={({ isActive }) =>
-            `block p-2 mb-2 rounded ${isActive ? "bg-blue-700" : ""}`
-          }
-        >
-          Mahasiswa
-        </NavLink>
-      </div>
-
-      {/* CONTENT */}
-      <div className="flex-1 flex flex-col">
+      {/* Content */}
+      <div className="flex-1 flex flex-col ml-64">
         <Header
           title={title}
           rightContent={
@@ -39,7 +18,6 @@ export default function AdminLayout({ title = "" }) {
           }
         />
 
-        {/* 🔥 INI YANG PENTING */}
         <div className="p-6 flex-1 overflow-auto">
           <Outlet />
         </div>

@@ -5,6 +5,9 @@ import Mahasiswa from "./pages/admin/Mahasiswa";
 import DetailMahasiswa from "./pages/admin/DetailMahasiswa";
 import AdminLayout from "./layouts/AdminLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import DosenPage from "./pages/Dosen/DosenPage";
+import MataKuliahPage from "./pages/MataKuliah/MataKuliahPage";
+import RegisterPage from "./pages/Register/RegisterPage";
 
 export default function App() {
   return (
@@ -12,6 +15,11 @@ export default function App() {
       <Routes>
         {/* LOGIN */}
         <Route path="/" element={<Login />} />
+        <Route path="/dosen" element={<DosenPage />} />
+
+        <Route path="/matakuliah" element={<MataKuliahPage />} />
+
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* ADMIN */}
         <Route

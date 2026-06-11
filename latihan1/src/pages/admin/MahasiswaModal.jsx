@@ -43,8 +43,10 @@ export default function MahasiswaModal({
   // =========================
   // SUBMIT
   // =========================
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("FORM DATA:", form);
 
     // VALIDASI
     if (!form.nim || !form.nama) {
@@ -52,7 +54,7 @@ export default function MahasiswaModal({
       return;
     }
 
-    // VALIDASI NIM UNIQUE (SAAT TAMBAH)
+    // VALIDASI NIM UNIQUE
     const isDuplicate = mahasiswa.some(
       (m) =>
         m.nim === form.nim &&
@@ -64,8 +66,11 @@ export default function MahasiswaModal({
       return;
     }
 
-    onSubmit(form);
-    onClose();
+    try {
+      await onSubmit(form);
+    } catch (error) {
+      console.error("Submit Error:", error);
+    }
   };
 
   // =========================

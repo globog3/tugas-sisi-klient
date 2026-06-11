@@ -1,0 +1,14 @@
+{
+  "users": [],
+  "mahasiswa": [
+    {
+      "nim": "123",
+      "nama": "adi",
+      "status": true,
+      "id": "wKrS6jeQA2U"
+    }
+  ],
+  "dosen": [],
+  "matakuliah": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}
