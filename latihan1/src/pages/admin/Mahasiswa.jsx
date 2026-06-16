@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MahasiswaTable from "./MahasiswaTable";
 import MahasiswaModal from "./MahasiswaModal";
+import Pagination from "../../components/Pagination";
 
 import {
   useMahasiswa,
@@ -13,6 +14,16 @@ import { showSuccess, showError } from "../../helpers/toast";
 
 export default function Mahasiswa() {
   const { data: mahasiswa = [] } = useMahasiswa();
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 5;
+  const lastIndex = currentPage * itemsPerPage;
+  const firstIndex = lastIndex - itemsPerPage;
+
+  const currentMahasiswa = mahasiswa.slice(firstIndex, lastIndex);
+
+  const totalPages = Math.ceil(mahasiswa.length / itemsPerPage);
 
   const create = useCreateMahasiswa();
   const update = useUpdateMahasiswa();
@@ -54,12 +65,17 @@ export default function Mahasiswa() {
       <button onClick={() => setOpen(true)}>+ Tambah</button>
 
       <MahasiswaTable
-        mahasiswa={mahasiswa}
+        mahasiswa={currentMahasiswa}
         onEdit={(data) => {
           setSelected(data);
           setOpen(true);
         }}
         onDelete={handleDelete}
+      />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
       />
 
       {open && (

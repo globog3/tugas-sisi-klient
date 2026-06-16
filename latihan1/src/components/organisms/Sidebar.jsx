@@ -31,6 +31,10 @@ export default function Sidebar() {
           Mata Kuliah
         </Link>
 
+        <Link to="/admin/kelas" className={menuClass("/admin/kelas")}>
+          Kelas
+        </Link>
+
         <Link to="/register" className={menuClass("/register")}>
           Registrasi User
         </Link>

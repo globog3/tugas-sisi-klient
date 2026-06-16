@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import Pagination from "../../components/Pagination";
 
 export default function UserPage() {
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const currentUsers = users.slice(firstIndex, lastIndex);
   const permissionsList = ["read", "write", "delete"];
 
   // GET USERS
@@ -59,7 +62,7 @@ export default function UserPage() {
         </thead>
 
         <tbody>
-          {users.map((u) => (
+          {currentUsers.map((u) => (
             <tr key={u.id}>
               <td>{u.name}</td>
               <td>{u.email}</td>
@@ -72,7 +75,11 @@ export default function UserPage() {
           ))}
         </tbody>
       </table>
-
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
       {/* EDIT FORM */}
       {selected && (
         <div style={{ marginTop: 20, padding: 10, border: "1px solid black" }}>

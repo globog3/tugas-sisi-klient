@@ -4,19 +4,30 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import RegisterPage from "./pages/Register/RegisterPage";
 
-// ADMIN PAGES
+// ADMIN
 import Dashboard from "./pages/admin/Dashboard";
 import Mahasiswa from "./pages/admin/Mahasiswa";
 import DetailMahasiswa from "./pages/admin/DetailMahasiswa";
 
-// DOSEN & MATKUL
+// DOSEN
 import DosenPage from "./pages/Dosen/DosenPage";
-import MataKuliahPage from "./pages/MataKuliah/MataKuliahPage";
+import TambahDosen from "./pages/Dosen/TambahDosen";
+import EditDosen from "./pages/Dosen/EditDosen";
 
-// RBAC USER MANAGEMENT
+// MATA KULIAH
+import MataKuliahPage from "./pages/MataKuliah/MataKuliahPage";
+import TambahMataKuliah from "./pages/MataKuliah/TambahMataKuliah";
+import EditMataKuliah from "./pages/MataKuliah/EditMataKuliah";
+
+// KELAS
+import KelasPage from "./pages/Kelas/KelasPage";
+import TambahKelas from "./pages/Kelas/TambahKelas";
+import EditKelas from "./pages/Kelas/EditKelas";
+
+// USER RBAC
 import UserPage from "./pages/admin/UserPage";
 
-// LAYOUT & PROTECTED ROUTE
+// LAYOUT
 import AdminLayout from "./layouts/AdminLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -24,15 +35,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* =========================
+        {/* ==========================
             PUBLIC ROUTES
-        ========================= */}
+        ========================== */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* =========================
-            ADMIN ROUTES (PROTECTED)
-        ========================= */}
+        {/* ==========================
+            ADMIN ROUTES
+        ========================== */}
         <Route
           path="/admin"
           element={
@@ -44,28 +55,46 @@ export default function App() {
           {/* DASHBOARD */}
           <Route index element={<Dashboard />} />
 
-          {/* MAHASISWA (FULL CRUD REACT QUERY) */}
+          {/* MAHASISWA */}
           <Route path="mahasiswa" element={<Mahasiswa />} />
+
           <Route path="mahasiswa/:nim" element={<DetailMahasiswa />} />
 
-          {/* DOSEN (READ ONLY REACT QUERY) */}
+          {/* DOSEN */}
           <Route path="dosen" element={<DosenPage />} />
 
-          {/* MATA KULIAH (READ ONLY REACT QUERY) */}
+          <Route path="dosen/tambah" element={<TambahDosen />} />
+
+          <Route path="dosen/edit/:id" element={<EditDosen />} />
+
+          {/* MATA KULIAH */}
           <Route path="matakuliah" element={<MataKuliahPage />} />
 
-          {/* RBAC USER MANAGEMENT (ROLE & PERMISSION) */}
+          <Route path="matakuliah/tambah" element={<TambahMataKuliah />} />
+
+          <Route path="matakuliah/edit/:id" element={<EditMataKuliah />} />
+
+          {/* KELAS */}
+          <Route path="kelas" element={<KelasPage />} />
+
+          <Route path="kelas/tambah" element={<TambahKelas />} />
+
+          <Route path="kelas/edit/:id" element={<EditKelas />} />
+
+          {/* USER RBAC */}
           <Route path="users" element={<UserPage />} />
         </Route>
 
-        {/* =========================
-            OPTIONAL: NOT FOUND
-        ========================= */}
+        {/* ==========================
+            NOT FOUND
+        ========================== */}
         <Route
           path="*"
           element={
-            <div className="p-10 text-center text-red-500">
-              404 - Page Not Found
+            <div className="p-10 text-center">
+              <h1 className="text-3xl text-red-600 font-bold">404</h1>
+
+              <p>Page Not Found</p>
             </div>
           }
         />

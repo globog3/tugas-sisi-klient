@@ -1,8 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
 import api from "../../services/api";
 
 // =====================
-const fetchMK = async () => {
+// GET ALL
+// =====================
+const fetchMataKuliah = async () => {
   const res = await api.get("/matakuliah");
   return res.data;
 };
@@ -10,34 +13,68 @@ const fetchMK = async () => {
 export const useMataKuliah = () => {
   return useQuery({
     queryKey: ["matakuliah"],
-    queryFn: fetchMK,
+    queryFn: fetchMataKuliah,
   });
 };
 
 // =====================
-export const useCreateMK = () => {
-  const qc = useQueryClient();
+// CREATE
+// =====================
+export const useCreateMataKuliah = () => {
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data) => api.post("/matakuliah", data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["matakuliah"] }),
+    mutationFn: async (data) => {
+      const res = await api.post("/matakuliah", data);
+      return res.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["matakuliah"],
+      });
+    },
   });
 };
 
-export const useUpdateMK = () => {
-  const qc = useQueryClient();
+// =====================
+// UPDATE
+// =====================
+export const useUpdateMataKuliah = () => {
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data) => api.put(`/matakuliah/${data.id}`, data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["matakuliah"] }),
+    mutationFn: async ({ id, data }) => {
+      const res = await api.put(`/matakuliah/${id}`, data);
+
+      return res.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["matakuliah"],
+      });
+    },
   });
 };
 
-export const useDeleteMK = () => {
-  const qc = useQueryClient();
+// =====================
+// DELETE
+// =====================
+export const useDeleteMataKuliah = () => {
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) => api.delete(`/matakuliah/${id}`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["matakuliah"] }),
+    mutationFn: async (id) => {
+      const res = await api.delete(`/matakuliah/${id}`);
+
+      return res.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["matakuliah"],
+      });
+    },
   });
 };
